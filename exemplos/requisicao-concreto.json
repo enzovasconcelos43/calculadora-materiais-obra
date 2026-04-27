@@ -1,0 +1,33 @@
+{
+  "alturaViga": 0.30,
+  "arestas": [
+    {
+      "id": "a1",
+      "verticeOrigem": "V1",
+      "verticeDestino": "V2",
+      "comprimento": 5.0,
+      "espessura": 0.15,
+      "alturaParede": 2.8,
+      "possuiPorta": false,
+      "alturaPorta": 0.0,
+      "larguraPorta": 0.0,
+      "possuiJanela": true,
+      "alturaJanela": 1.0,
+      "larguraJanela": 1.5
+    },
+    {
+      "id": "a2",
+      "verticeOrigem": "V2",
+      "verticeDestino": "V3",
+      "comprimento": 4.0,
+      "espessura": 0.15,
+      "alturaParede": 2.8,
+      "possuiPorta": true,
+      "alturaPorta": 2.1,
+      "larguraPorta": 0.8,
+      "possuiJanela": false,
+      "alturaJanela": 0.0,
+      "larguraJanela": 0.0
+    }
+  ]
+}
