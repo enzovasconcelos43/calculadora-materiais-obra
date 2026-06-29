@@ -1,0 +1,142 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:a="jakarta.faces.passthrough">
+
+    <ui:define name="titulo">Quantidade de Tijolos</ui:define>
+
+    <ui:define name="conteudo">
+        <div class="card">
+            <h1>🧮 Cálculo de Quantidade de Tijolos</h1>
+            <p class="sub">
+                Informe as paredes da planta e as dimensões do tijolo. O sistema
+                desconta a área de portas e janelas e aplica o percentual de perda.
+                <strong>Use ponto para decimais (ex.: 2.8).</strong>
+            </p>
+
+            <h:form id="form">
+                <h:panelGroup id="msgs" layout="block">
+                    <h:messages globalOnly="true" layout="list"
+                                infoClass="msg msg-info"
+                                warnClass="msg msg-warn"
+                                errorClass="msg msg-error"/>
+                </h:panelGroup>
+
+                <div class="linha">
+                    <div class="campo">
+                        <label for="nome">Nome do usuário / cliente</label>
+                        <h:inputText id="nome" value="#{tijoloBean.nomeUsuario}"
+                                     a:placeholder="Ex.: João da Silva"/>
+                    </div>
+                    <div class="campo">
+                        <label for="lt">Largura do tijolo (m)</label>
+                        <h:inputText id="lt" value="#{tijoloBean.larguraTijolo}"/>
+                    </div>
+                    <div class="campo">
+                        <label for="at">Altura do tijolo (m)</label>
+                        <h:inputText id="at" value="#{tijoloBean.alturaTijolo}"/>
+                    </div>
+                    <div class="campo">
+                        <label for="perda">Perda (%)</label>
+                        <h:inputText id="perda" value="#{tijoloBean.percentualPerda}"/>
+                    </div>
+                </div>
+
+                <h2>Paredes da planta</h2>
+                <h:panelGroup id="painelParedes" layout="block">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parede</th>
+                                <th>Comprimento (m)</th>
+                                <th>Altura (m)</th>
+                                <th>Porta</th>
+                                <th>Janela</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{tijoloBean.paredes}" var="parede">
+                                <tr>
+                                    <td><h:inputText value="#{parede.id}" size="6"/></td>
+                                    <td><h:inputText value="#{parede.comprimento}"/></td>
+                                    <td><h:inputText value="#{parede.alturaParede}"/></td>
+                                    <td>
+                                        <div class="check-linha">
+                                            <h:selectBooleanCheckbox value="#{parede.possuiPorta}">
+                                                <f:ajax execute="@form" render="painelParedes"/>
+                                            </h:selectBooleanCheckbox>
+                                            <span>Possui</span>
+                                        </div>
+                                        <h:panelGroup rendered="#{parede.possuiPorta}" layout="block">
+                                            <label>Largura</label>
+                                            <h:inputText value="#{parede.larguraPorta}" size="6"/>
+                                            <label>Altura</label>
+                                            <h:inputText value="#{parede.alturaPorta}" size="6"/>
+                                        </h:panelGroup>
+                                    </td>
+                                    <td>
+                                        <div class="check-linha">
+                                            <h:selectBooleanCheckbox value="#{parede.possuiJanela}">
+                                                <f:ajax execute="@form" render="painelParedes"/>
+                                            </h:selectBooleanCheckbox>
+                                            <span>Possui</span>
+                                        </div>
+                                        <h:panelGroup rendered="#{parede.possuiJanela}" layout="block">
+                                            <label>Largura</label>
+                                            <h:inputText value="#{parede.larguraJanela}" size="6"/>
+                                            <label>Altura</label>
+                                            <h:inputText value="#{parede.alturaJanela}" size="6"/>
+                                        </h:panelGroup>
+                                    </td>
+                                    <td>
+                                        <h:commandButton value="remover"
+                                                         styleClass="btn btn-secundario btn-pequeno"
+                                                         action="#{tijoloBean.removerParede(parede)}">
+                                            <f:ajax execute="@form" render="painelParedes"/>
+                                        </h:commandButton>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+
+                    <h:commandButton value="+ Adicionar parede"
+                                     styleClass="btn btn-secundario btn-pequeno"
+                                     action="#{tijoloBean.adicionarParede}">
+                        <f:ajax execute="@form" render="painelParedes"/>
+                    </h:commandButton>
+                </h:panelGroup>
+
+                <div class="acoes">
+                    <h:commandButton value="Calcular orçamento" styleClass="btn"
+                                     action="#{tijoloBean.calcular}">
+                        <f:ajax execute="@form" render="msgs painelResultado"/>
+                    </h:commandButton>
+                    <h:commandButton value="Limpar" styleClass="btn btn-secundario"
+                                     action="#{tijoloBean.limpar}">
+                        <f:ajax execute="@this" render="@form"/>
+                    </h:commandButton>
+                </div>
+
+                <h:panelGroup id="painelResultado" layout="block">
+                    <h:panelGroup rendered="#{not empty tijoloBean.resposta}" layout="block"
+                                  styleClass="resultado">
+                        <p class="numero">Orçamento Nº #{tijoloBean.numeroOrcamento}</p>
+                        <p>
+                            <strong>Tijolos necessários (com perda):</strong>
+                            #{tijoloBean.resposta.quantidadeTijolosComPerda}
+                        </p>
+                        <p>Tijolos sem perda: #{tijoloBean.resposta.quantidadeTijolos}</p>
+                        <p>Área total das paredes: #{tijoloBean.resposta.areaTotalParedes} m²</p>
+                        <p>Área de aberturas (portas/janelas): #{tijoloBean.resposta.areaAberturas} m²</p>
+                        <p>Área líquida: #{tijoloBean.resposta.areaLiquidaParedes} m²</p>
+                        <p class="sub">#{tijoloBean.resposta.mensagem}</p>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

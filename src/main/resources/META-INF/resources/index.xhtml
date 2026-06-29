@@ -1,0 +1,41 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="titulo">Início — Calculadora de Materiais</ui:define>
+
+    <ui:define name="conteudo">
+        <div class="card">
+            <h1>Calculadora de Materiais para Obra Residencial</h1>
+            <p class="sub">
+                Informe a planta da sua obra (paredes/arestas) e calcule o consumo
+                de materiais. Cada cálculo gera um orçamento com número próprio,
+                salvo no banco de dados para consulta futura.
+            </p>
+        </div>
+
+        <div class="menu-grid">
+            <a href="concreto.xhtml">
+                <div class="menu-card">
+                    <div class="icone">🧱</div>
+                    <h2>Volume de Concreto</h2>
+                    <p class="sub">Calcule o volume de concreto da viga baldrame a partir das paredes da planta.</p>
+                </div>
+            </a>
+            <a href="tijolos.xhtml">
+                <div class="menu-card">
+                    <div class="icone">🧮</div>
+                    <h2>Quantidade de Tijolos</h2>
+                    <p class="sub">Calcule quantos tijolos são necessários, descontando portas e janelas.</p>
+                </div>
+            </a>
+            <a href="consulta.xhtml">
+                <div class="menu-card">
+                    <div class="icone">🔎</div>
+                    <h2>Consultar Orçamentos</h2>
+                    <p class="sub">Busque orçamentos já calculados pelo número ou pelo nome do usuário.</p>
+                </div>
+            </a>
+        </div>
+    </ui:define>
+</ui:composition>

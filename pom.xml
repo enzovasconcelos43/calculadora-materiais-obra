@@ -18,9 +18,29 @@
 
     <properties>
         <java.version>17</java.version>
+        <joinfaces.version>5.2.7</joinfaces.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- JoinFaces: integra o Jakarta Faces (JSF) dentro do Spring Boot 3.2 -->
+            <dependency>
+                <groupId>org.joinfaces</groupId>
+                <artifactId>joinfaces-bom</artifactId>
+                <version>${joinfaces.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+
+        <!-- Front-end: Jakarta Faces (JSF) rodando no Spring Boot via JoinFaces -->
+        <dependency>
+            <groupId>org.joinfaces</groupId>
+            <artifactId>faces-spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

@@ -1,0 +1,104 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:a="jakarta.faces.passthrough">
+
+    <ui:define name="titulo">Volume de Concreto</ui:define>
+
+    <ui:define name="conteudo">
+        <div class="card">
+            <h1>🧱 Cálculo de Volume de Concreto</h1>
+            <p class="sub">
+                Informe as paredes (arestas) da planta. O volume é calculado como
+                espessura × altura da viga × comprimento, somando todas as paredes.
+                <strong>Use ponto para decimais (ex.: 0.30).</strong>
+            </p>
+
+            <h:form id="form">
+                <h:panelGroup id="msgs" layout="block">
+                    <h:messages globalOnly="true" layout="list"
+                                infoClass="msg msg-info"
+                                warnClass="msg msg-warn"
+                                errorClass="msg msg-error"/>
+                </h:panelGroup>
+
+                <div class="linha">
+                    <div class="campo">
+                        <label for="nome">Nome do usuário / cliente</label>
+                        <h:inputText id="nome" value="#{concretoBean.nomeUsuario}"
+                                     a:placeholder="Ex.: João da Silva"/>
+                    </div>
+                    <div class="campo">
+                        <label for="altura">Altura da viga (m)</label>
+                        <h:inputText id="altura" value="#{concretoBean.alturaViga}"/>
+                    </div>
+                </div>
+
+                <h2>Paredes da planta</h2>
+                <h:panelGroup id="painelParedes" layout="block">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parede</th>
+                                <th>Comprimento (m)</th>
+                                <th>Espessura (m)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{concretoBean.paredes}" var="parede">
+                                <tr>
+                                    <td><h:inputText value="#{parede.id}" size="6"/></td>
+                                    <td><h:inputText value="#{parede.comprimento}"/></td>
+                                    <td><h:inputText value="#{parede.espessura}"/></td>
+                                    <td>
+                                        <h:commandButton value="remover"
+                                                         styleClass="btn btn-secundario btn-pequeno"
+                                                         action="#{concretoBean.removerParede(parede)}">
+                                            <f:ajax execute="@form" render="painelParedes"/>
+                                        </h:commandButton>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+
+                    <h:commandButton value="+ Adicionar parede"
+                                     styleClass="btn btn-secundario btn-pequeno"
+                                     action="#{concretoBean.adicionarParede}">
+                        <f:ajax execute="@form" render="painelParedes"/>
+                    </h:commandButton>
+                </h:panelGroup>
+
+                <div class="acoes">
+                    <h:commandButton value="Calcular orçamento" styleClass="btn"
+                                     action="#{concretoBean.calcular}">
+                        <f:ajax execute="@form" render="msgs painelResultado"/>
+                    </h:commandButton>
+                    <h:commandButton value="Limpar" styleClass="btn btn-secundario"
+                                     action="#{concretoBean.limpar}">
+                        <f:ajax execute="@this" render="@form"/>
+                    </h:commandButton>
+                </div>
+
+                <h:panelGroup id="painelResultado" layout="block">
+                    <h:panelGroup rendered="#{not empty concretoBean.resposta}" layout="block"
+                                  styleClass="resultado">
+                        <p class="numero">Orçamento Nº #{concretoBean.numeroOrcamento}</p>
+                        <p>
+                            <strong>Volume total de concreto:</strong>
+                            #{concretoBean.resposta.volumeTotal} m³
+                        </p>
+                        <p>
+                            <strong>Paredes processadas:</strong>
+                            #{concretoBean.resposta.quantidadeArestasProcessadas}
+                        </p>
+                        <p class="sub">#{concretoBean.resposta.mensagem}</p>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

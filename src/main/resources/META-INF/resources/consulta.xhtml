@@ -1,0 +1,89 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:a="jakarta.faces.passthrough">
+
+    <ui:define name="titulo">Consultar Orçamentos</ui:define>
+
+    <ui:define name="conteudo">
+        <div class="card">
+            <h1>🔎 Consultar Orçamentos</h1>
+            <p class="sub">
+                Busque um orçamento pelo número (ex.: ORC-20260629-0001) ou pelo
+                nome do usuário. Deixe em branco e clique em "Listar todos".
+            </p>
+
+            <h:form id="form">
+                <h:panelGroup id="msgs" layout="block">
+                    <h:messages globalOnly="true" layout="list"
+                                infoClass="msg msg-info"
+                                warnClass="msg msg-warn"
+                                errorClass="msg msg-error"/>
+                </h:panelGroup>
+
+                <div class="linha">
+                    <div class="campo">
+                        <label for="termo">Número do orçamento ou nome do usuário</label>
+                        <h:inputText id="termo" value="#{consultaBean.termoBusca}"
+                                     a:placeholder="Ex.: ORC-20260629-0001 ou João"/>
+                    </div>
+                </div>
+
+                <div class="acoes">
+                    <h:commandButton value="Buscar por número" styleClass="btn"
+                                     action="#{consultaBean.buscarPorNumero}">
+                        <f:ajax execute="@form" render="msgs tabela"/>
+                    </h:commandButton>
+                    <h:commandButton value="Buscar por nome" styleClass="btn"
+                                     action="#{consultaBean.buscarPorNome}">
+                        <f:ajax execute="@form" render="msgs tabela"/>
+                    </h:commandButton>
+                    <h:commandButton value="Listar todos" styleClass="btn btn-secundario"
+                                     action="#{consultaBean.listarTodos}">
+                        <f:ajax execute="@this" render="msgs tabela termo"/>
+                    </h:commandButton>
+                </div>
+
+                <h:panelGroup id="tabela" layout="block">
+                    <h:panelGroup rendered="#{empty consultaBean.resultados}" layout="block">
+                        <p class="sub" style="margin-top:16px;">Nenhum orçamento para exibir.</p>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty consultaBean.resultados}" layout="block">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Usuário</th>
+                                <th>Tipo</th>
+                                <th>Entrada</th>
+                                <th>Resultado</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{consultaBean.resultados}" var="o">
+                                <tr>
+                                    <td><strong>#{o.numero}</strong></td>
+                                    <td>#{o.nomeUsuario}</td>
+                                    <td>#{o.tipoCalculo}</td>
+                                    <td>#{o.descricaoEntrada}</td>
+                                    <td>#{o.resultado}</td>
+                                    <td>
+                                        <h:outputText value="#{o.dataCriacao}">
+                                            <f:convertDateTime type="localDateTime"
+                                                               pattern="dd/MM/yyyy HH:mm"/>
+                                        </h:outputText>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

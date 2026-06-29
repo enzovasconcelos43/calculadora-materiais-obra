@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><ui:insert name="titulo">Calculadora de Materiais</ui:insert></title>
+    <style>
+        :root {
+            --azul: #1f6feb;
+            --azul-escuro: #143d80;
+            --cinza: #f4f6fa;
+            --borda: #d8dee9;
+            --texto: #1c2330;
+            --verde: #1a7f37;
+            --vermelho: #cf222e;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--cinza);
+            color: var(--texto);
+        }
+        header {
+            background: var(--azul-escuro);
+            color: #fff;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        header .logo { font-size: 1.2rem; font-weight: 700; }
+        header nav a {
+            color: #cfe0ff;
+            text-decoration: none;
+            margin-left: 18px;
+            font-weight: 600;
+        }
+        header nav a:hover { color: #fff; text-decoration: underline; }
+        .container { max-width: 960px; margin: 28px auto; padding: 0 18px; }
+        .card {
+            background: #fff;
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+        }
+        h1 { font-size: 1.6rem; margin: 0 0 6px; }
+        h2 { font-size: 1.2rem; margin: 0 0 14px; color: var(--azul-escuro); }
+        .sub { color: #5b6675; margin-top: 0; }
+        label { display: block; font-weight: 600; margin-bottom: 4px; font-size: .9rem; }
+        input[type=text], input[type=number], .campo input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            font-size: .95rem;
+        }
+        .linha { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+        .linha .campo { flex: 1; min-width: 160px; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { padding: 8px; border-bottom: 1px solid var(--borda); text-align: left; font-size: .88rem; vertical-align: top; }
+        th { background: #eef3fb; color: var(--azul-escuro); }
+        .btn {
+            display: inline-block;
+            background: var(--azul);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: .95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover { background: var(--azul-escuro); }
+        .btn-secundario { background: #5b6675; }
+        .btn-secundario:hover { background: #3d4453; }
+        .btn-pequeno { padding: 5px 10px; font-size: .8rem; }
+        .acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+        .resultado {
+            background: #eaf6ec;
+            border: 1px solid #abd8b3;
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-top: 18px;
+        }
+        .resultado .numero { font-weight: 700; color: var(--verde); }
+        .msg { margin: 10px 0; padding: 10px 14px; border-radius: 8px; font-size: .9rem; }
+        .msg-info { background: #eaf6ec; border: 1px solid #abd8b3; }
+        .msg-warn { background: #fff4e0; border: 1px solid #f0c674; }
+        .msg-error { background: #fbe9eb; border: 1px solid #f0a3aa; color: var(--vermelho); }
+        .menu-grid { display: flex; gap: 18px; flex-wrap: wrap; }
+        .menu-grid a {
+            flex: 1; min-width: 220px;
+            text-decoration: none; color: var(--texto);
+        }
+        .menu-card {
+            border: 1px solid var(--borda); border-radius: 12px; padding: 20px;
+            background: #fff; transition: .15s;
+        }
+        .menu-card:hover { border-color: var(--azul); box-shadow: 0 2px 10px rgba(31,111,235,.15); }
+        .menu-card .icone { font-size: 1.8rem; }
+        .check-linha { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+        footer { text-align: center; color: #8a93a3; font-size: .8rem; padding: 24px; }
+    </style>
+</h:head>
+<h:body>
+    <header>
+        <span class="logo">🏗️ Calculadora de Materiais</span>
+        <nav>
+            <a href="index.xhtml">Início</a>
+            <a href="concreto.xhtml">Concreto</a>
+            <a href="tijolos.xhtml">Tijolos</a>
+            <a href="consulta.xhtml">Consultar</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <ui:insert name="conteudo">Conteúdo</ui:insert>
+    </main>
+
+    <footer>
+        Projeto acadêmico — Desenvolvimento de Sistemas · Front-end em Jakarta Faces
+    </footer>
+</h:body>
+</html>
