@@ -1,168 +1,59 @@
-# 💊 MedLembre — Controle de Medicamentos
+# Calculadora de Materiais para Obra Residencial
 
-![CI](https://github.com/SEU_USUARIO/medlembre/actions/workflows/ci.yml/badge.svg)
+Projeto acad�mico desenvolvido para a disciplina de **Desenvolvimento de Sistemas** � UniCEUB.
 
-> Aplicação CLI para controle de medicamentos e horários, desenvolvida para auxiliar idosos, cuidadores e pacientes crônicos a não esquecerem seus remédios.
+Sistema completo com back-end em Spring Boot e front-end em **Jakarta Faces**, capaz de calcular o consumo de materiais para obras residenciais e salvar os or�amentos gerados no banco de dados.
 
----
+## Funcionalidades
 
-## 📋 Sumário
+- C�lculo do volume de concreto para vigas baldrame
+- C�lculo da quantidade de tijolos (com desconto de portas e janelas)
+- Persist�ncia de or�amentos no banco de dados (H2)
+- Busca de or�amentos por n�mero ou nome do usu�rio
+- Front-end completo em Jakarta Faces (JoinFaces + Spring Boot)
+- API REST documentada via Swagger
+- Testes automatizados com JUnit
 
-- [O Problema](#-o-problema)
-- [A Solução](#-a-solução)
-- [Público-alvo](#-público-alvo)
-- [Funcionalidades](#-funcionalidades)
-- [Tecnologias](#-tecnologias)
-- [Instalação](#-instalação)
-- [Como Executar](#-como-executar)
-- [Como Rodar os Testes](#-como-rodar-os-testes)
-- [Como Rodar o Lint](#-como-rodar-o-lint)
-- [Versão](#-versão)
-- [Autor](#-autor)
+## Tecnologias
 
----
+- Java 21
+- Spring Boot 3.2.5
+- Jakarta Faces 4.0 (via JoinFaces 5.2.7)
+- Spring Data JPA + Hibernate
+- Banco de dados H2 (em mem�ria)
+- Maven
+- JUnit + MockMvc
 
-## 🔍 O Problema
+## Como rodar
 
-O esquecimento de medicamentos é uma das principais causas de complicações de saúde em pacientes crônicos e idosos. Segundo estudos da área de saúde pública, cerca de 50% dos pacientes com doenças crônicas não aderem corretamente ao tratamento medicamentoso. Isso resulta em internações desnecessárias, piora do quadro clínico e sobrecarga do sistema de saúde.
+Pr�-requisitos: Java 17 ou superior e Maven 3.6 ou superior.
 
-## 💡 A Solução
+mvn spring-boot:run
 
-O **MedLembre** é uma aplicação de linha de comando (CLI) que permite cadastrar medicamentos com seus respectivos horários e dosagens, acompanhar quais já foram tomados no dia e manter uma rotina organizada de tratamento. Os dados são salvos localmente em arquivo JSON, garantindo persistência entre sessões.
+Aguarde aparecer Started ObraApplication no terminal.
 
-## 👥 Público-alvo
+## Telas dispon�veis
 
-- Idosos que tomam múltiplos medicamentos diariamente
-- Cuidadores responsáveis por administrar remédios a dependentes
-- Pacientes crônicos que precisam organizar sua rotina de tratamento
-- Familiares que auxiliam parentes em tratamento
+- In�cio: http://localhost:8080
+- C�lculo de Concreto: http://localhost:8080/concreto.xhtml
+- C�lculo de Tijolos: http://localhost:8080/tijolos.xhtml
+- Consultar Or�amentos: http://localhost:8080/consulta.xhtml
+- Console do Banco H2: http://localhost:8080/h2-console
+- Documenta��o da API: http://localhost:8080/swagger-ui/index.html
 
-## ✅ Funcionalidades
+Aten��o: use ponto para decimais (ex.: 0.30 e nao 0,30)
 
-| Funcionalidade | Descrição |
-|---|---|
-| Cadastrar medicamento | Registra nome, horário (HH:MM) e dosagem |
-| Listar medicamentos | Exibe todos os medicamentos com status do dia |
-| Marcar como tomado | Indica que um medicamento foi administrado |
-| Reiniciar status | Reseta todos os status para um novo dia |
-| Remover medicamento | Exclui um medicamento do cadastro |
-| Persistência | Dados salvos em JSON entre sessões |
-| Validação | Impede horários inválidos e cadastros duplicados |
+## Endpoints da API REST
 
-## 🛠️ Tecnologias
+POST /api/materiais/concreto
+POST /api/materiais/tijolos
 
-- **Linguagem:** Python 3.10+
-- **Testes:** [pytest](https://pytest.org)
-- **Linting:** [ruff](https://docs.astral.sh/ruff/)
-- **CI:** GitHub Actions
-- **Armazenamento:** JSON (arquivo local)
-- **Versionamento:** Semântico (SemVer)
+Exemplos de requisi��o dispon�veis na pasta /exemplos.
 
----
+## Executar os testes
 
-## 🚀 Instalação
+mvn test
 
-### Pré-requisitos
+O plano de teste completo est� no arquivo PLANO-DE-TESTE.md.
 
-- Python 3.10 ou superior instalado
-- `pip` disponível no terminal
-
-### Passo a passo
-
-**1. Clone o repositório:**
-
-```bash
-git clone https://github.com/SEU_USUARIO/medlembre.git
-cd medlembre
-```
-
-**2. (Recomendado) Crie um ambiente virtual:**
-
-```bash
-python -m venv .venv
-
-# No Windows:
-.venv\Scripts\activate
-
-# No Linux/macOS:
-source .venv/bin/activate
-```
-
-**3. Instale o projeto e suas dependências de desenvolvimento:**
-
-```bash
-pip install -e ".[dev]"
-```
-
----
-
-## ▶️ Como Executar
-
-Com o ambiente virtual ativado, na pasta raiz do projeto:
-
-```bash
-python main.py
-```
-
-Você verá o menu principal:
-
-```
-==================================================
-       💊  MedLembre — Controle de Medicamentos
-==================================================
-
-[1] Cadastrar medicamento
-[2] Listar medicamentos
-[3] Marcar como tomado
-[4] Reiniciar status do dia
-[5] Remover medicamento
-[0] Sair
---------------------------------------------------
-Escolha uma opção:
-```
-
----
-
-## 🧪 Como Rodar os Testes
-
-```bash
-pytest --tb=short
-```
-
-Saída esperada:
-
-```
-========================= test session starts ==========================
-collected 15 items
-
-tests/test_medication.py ..............                           [100%]
-
-========================== 15 passed in 0.12s ==========================
-```
-
----
-
-## 🔍 Como Rodar o Lint
-
-```bash
-ruff check .
-```
-
-Se o código estiver sem problemas:
-
-```
-All checks passed!
-```
-
----
-
-## 🔖 Versão
-
-**1.0.0** — Consulte o [CHANGELOG.md](CHANGELOG.md) para o histórico de mudanças.
-
----
-
-## 👤 Autor
-
-**[SEU NOME COMPLETO]**  
-Repositório: [https://github.com/SEU_USUARIO/medlembre](https://github.com/SEU_USUARIO/medlembre)
+Desenvolvido por Enzo Vasconcelos � Ci�ncia da Computa��o, UniCEUB
